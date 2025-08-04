@@ -1,12 +1,11 @@
 "use client";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { Amplify } from "aws-amplify";
-import { useState } from "react";
 import { generateClient } from "aws-amplify/data";
 import { type Schema } from "@/amplify/data/resource";
-
 import outputs from "@/amplify_outputs.json";
 
-   Amplify.configure(outputs);
+Amplify.configure(outputs);
 const client = generateClient<Schema>();
 
 export default function Home() {
@@ -14,7 +13,7 @@ export default function Home() {
   const [password, setPassword] = useState<string>('');
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  const handleLogin = async (e: FormEvent) => {
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -28,6 +27,7 @@ export default function Home() {
       if (result?.data?.length > 0) {
         setIsLoggedIn(true);
       } else {
+        alert("Invalid email or password");
         setIsLoggedIn(false);
       }
     } catch (err) {
